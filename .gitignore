@@ -1,0 +1,11 @@
+# Ignore arquivos temporários do Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+*.zip
+
+# Ignore logs e outros arquivos temporários
+*.log
+*.bak
+.DS_Store
