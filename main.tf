@@ -1,7 +1,7 @@
 # main.tf
 provider "aws" {
-  region = var.region
-    profile = "vitorgabriel"
+  region  = var.region
+  profile = "vitorgabriel"
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
@@ -56,4 +56,13 @@ resource "aws_apigatewayv2_stage" "default_stage" {
   api_id      = aws_apigatewayv2_api.http_api.id
   name        = "$default"
   auto_deploy = true
+}
+
+# Adicionando a permissão para que o API Gateway invoque a Lambda
+resource "aws_lambda_permission" "allow_apigateway" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.my_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }
